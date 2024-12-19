@@ -43,6 +43,10 @@ public class SongController {
 	public String saveSong(SongForm songForm, RedirectAttributes redirectAttributes) {
 		MultipartFile multipartFile = songForm.getFile();
 		String fileName = multipartFile.getOriginalFilename();
+		if (!rightFile(fileName)) {
+			redirectAttributes.addFlashAttribute("message", "File is not a valid file! Only accept: .mp3, .wav, .ogg, .m4p");
+			return "redirect:/song/create";
+		}
 		try {
 			FileCopyUtils.copy(songForm.getFile().getBytes(), new File(folderPath + fileName));
 		} catch (IOException ex) {
@@ -59,5 +63,17 @@ public class SongController {
 
 		redirectAttributes.addFlashAttribute("message", "Add new song successfully!");
 		return "redirect:/song";
+	}
+
+	private boolean rightFile(String fileName) {
+		String[] acceptedExtensions = {".mp3", ".wav", ".ogg", ".m4p"};
+		String extension = fileName.substring(fileName.lastIndexOf("."));
+		boolean accepted = false;
+		for (String ext : acceptedExtensions) {
+			if (extension.equals(ext)) {
+				accepted = true;
+			}
+		}
+		return accepted;
 	}
 }

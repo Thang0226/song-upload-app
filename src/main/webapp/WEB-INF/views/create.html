@@ -12,6 +12,10 @@
     </a>
 </p>
 
+<div th:if="${message}" style="color: green; margin: 10px 0">
+    <span th:text="${message}"></span>
+</div>
+
 <div id="form">
     <form th:action="@{/song/save}" th:object="${songForm}"
           method="POST" enctype="multipart/form-data">
@@ -30,7 +34,7 @@
             </tr>
             <tr>
                 <td><label for="file">Audio File: </label></td>
-                <td><input type="file" id="file" th:field="*{file}" accept=".mp3, .wav, .ogg, .m4p"/></td>
+                <td><input type="file" id="file" th:field="*{file}"/></td>
             </tr>
             <tr>
                 <td></td>
